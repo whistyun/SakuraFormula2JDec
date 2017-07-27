@@ -1,4 +1,15 @@
 {
+    var decimalConstractor = "new BigDecimal("
+   var negateMethod       = ".negate()"
+   var opeMethod          = {
+          "+": ".add("      ,
+          "-": ".subtract(" ,
+          "*": ".multiply(" ,
+          "/": ".divide("   ,
+          "%": ".remainder(",
+          "^": ".pow("
+     };
+
     function pushAll(to){
         for(var i=1;i< arguments.length; ++i){
             var elem = arguments[i];
@@ -28,17 +39,10 @@
                 sigFlg = !sigFlg;
             }
         }
-        return sigFlg? ".negate()": "";
+        return sigFlg? negateMethod: "";
     }
     function conv(ope){
-        return ({
-            "+": ".add("      ,
-            "-": ".subtract(" ,
-            "*": ".multiply(" ,
-            "/": ".divide("   ,
-            "%": ".remainder(",
-            "^": ".pow("
-        })[ope];
+        return opeMethod[ope];
     }
 }
 
@@ -98,8 +102,14 @@ PowTerm
  * @return 文字列(プログラムコード)
  */
 Factor
-    = fn:Code? "(" _ expr:Expression _ ")" { 
-        return (fn? fn:"") + "(" + expr + ")"; 
+    = fn:Code? "(" _ expr:Expression append:( _ "," _ Expression)* _ ")" { 
+        var str = (fn? fn:"") + "(" + expr;
+        if(append){
+            for(var i=0;i<append.length;++i){
+                str += ", " + append[i][3];
+            }
+        }
+        return str+")"; 
     }
     / Decimal
 
@@ -117,7 +127,7 @@ Sign "sign"
  * @return 文字列(プログラムコード)
  */
 Decimal "decimal"
-    = _ [0-9]+("." [0-9]+)? { return "new BigDecimal(\"" + text() + "\")" }
+    = _ [0-9]+("." [0-9]+)? { return decimalConstractor + "\"" + text() + "\")" }
     / Code
 
 /**
