@@ -9,8 +9,7 @@
  * 　Peg.jsは、David Majda( (c)2010-2016)、Futago-za Ryu( (c)2017+ )により、
  * 　MIT Licenseで配布されています。
  *
- * Copyright (c) 2017 whistyun
- * Released under the MIT license
+ * このスクリプトはUnlicenseを採用しています。
  ***************************************************************/
 
 /**変換時、元の数式をコメントアウトして残すか(true:残す, false:残さず数式を削除する)*/
